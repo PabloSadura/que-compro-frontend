@@ -16,7 +16,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/que-compro-frontend",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -96,5 +95,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "054647eb-73ac-42be-9db1-d2a9eef4eab4"
   }
 }
