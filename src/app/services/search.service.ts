@@ -2,13 +2,14 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { SearchEvent } from '../interfaces/interfaces';
+import { url } from '../../environments/environment.prod';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  private API_URL = 'https://quecompro-backend.onrender.com/api/search'; // ⚡ ajustá si cambia tu backend
+  private API_URL = url.base_url + '/search'
 
   constructor(
     private auth: AuthService,

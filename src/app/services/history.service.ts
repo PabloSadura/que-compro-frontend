@@ -4,12 +4,13 @@ import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { HistoryEntry } from '../interfaces/interfaces';
+import { url } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService {
-  private baseUrl = 'https://quecompro-backend.onrender.com/api/history';
+  private baseUrl = url.base_url + '/history'; // Ajusta la URL según tu backend
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 
