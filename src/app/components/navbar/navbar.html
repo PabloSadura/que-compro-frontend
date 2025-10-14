@@ -1,0 +1,48 @@
+<nav class="sticky top-0 z-50 bg-slate-50/80 backdrop-blur-md border-b border-slate-200">
+  <div class="container mx-auto flex items-center justify-between p-3">
+    
+    <a class="text-xl font-bold text-black-800" [routerLink]="['/home']">
+      ¿Qué Compro?
+    </a>
+
+    <div class="hidden lg:flex items-center gap-x-4">
+      @if (isLoggedIn()) {
+        <div class="flex items-center gap-x-4">
+          <span class="text-sm font-medium text-slate-700 hidden xl:block">{{ user()?.email }}</span>
+          <a [routerLink]="['/history']" class="inline-flex items-center rounded-full bg-gray-50 px-3 py-2 font-medium text-gray-600 inset-ring inset-ring-gray-500/10 hover:bg-slate-100 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            Historial
+          </a>
+          <button (click)="logout()" class="rounded-full inline-flex items-center  px-3 py-2 font-medium text-pink-700 inset-ring inset-ring-pink-700/10 hover:bg-pink-50 ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
+            Logout
+          </button>
+        </div>
+      } @else {
+        <div class="flex items-center gap-x-2">
+          <a [routerLink]="['/login']" class="inline-flex items-center rounded-full bg-gray-50 px-3 py-2 font-medium text-gray-600 inset-ring inset-ring-gray-500/10 hover:bg-slate-50 transition-colors">Login</a>
+          <a [routerLink]="['/signup']" class="inline-flex items-center rounded-full bg-gray-50 px-3 py-2 font-medium text-gray-600 inset-ring inset-ring-gray-500/10 hover:bg-slate-50 transition-colors">Signup</a>
+        </div>
+      }
+    </div>
+
+    <div class="lg:hidden">
+      <button (click)="isMenuOpen.set(!isMenuOpen())" class="rounded-md p-2 text-slate-600 hover:bg-slate-200">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="lg:hidden bg-slate-50 border-t border-slate-200 overflow-hidden transition-all duration-300 ease-in-out"
+       [ngClass]="isMenuOpen() ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'">
+    <div class="flex flex-col p-4 gap-y-3">
+      @if (isLoggedIn()) {
+        <a [routerLink]="['/history']" class="w-full text-center rounded-lg px-4 py-2 text-slate-700 hover:bg-slate-200">Historial</a>
+        <button (click)="logout()" class="w-full text-center rounded-lg px-4 py-2 text-red-600 hover:bg-red-50">Logout</button>
+      } @else {
+        <a [routerLink]="['/login']" class="w-full text-center rounded-lg px-4 py-2 text-slate-700 hover:bg-slate-200">Login</a>
+        <a [routerLink]="['/signup']" class="w-full text-center rounded-lg px-4 py-2 text-white bg-sky-500 hover:bg-sky-600">Signup</a>
+      }
+    </div>
+  </div>
+</nav>
