@@ -1,16 +1,26 @@
-- type: static site
-    name: que-compro-frontend
-    rootDir: ./que-compro-frontend
-    branch: main
-    buildCommand: "npm install && ng build"
-    # 1. Asegúrate de que este directorio sea el correcto.
-    #    Debe coincidir con el 'outputPath' en tu angular.json.
-    publishDir: dist/que-compro-frontend
+# render.yaml - Configuración para un repositorio que solo contiene el frontend de Angular.
 
-    # 2. ✅ ¡ESTA ES LA REGLA QUE SOLUCIONA EL ERROR 404!
-    #    Le dice a Render que para cualquier ruta que no encuentre (/*),
-    #    debe servir el archivo index.html.
+services:
+  # ---------------------- #
+  #    Servicio Frontend   #
+  # ---------------------- #
+  - type: static site
+    name: que-compro-frontend # Puedes cambiar este nombre si quieres
+    env: static
+    # La rama de tu repositorio (el log dice 'master', pero 'main' es más común hoy en día)
+    branch: master
+    # NO se necesita 'rootDir' porque el repositorio ya es la raíz del proyecto.
+    
+    # Comandos para instalar dependencias y construir la aplicación de Angular.
+    buildCommand: "npm install && ng build"
+    
+    # Directorio de publicación, confirmado por tu log de despliegue.
+    publishDir: dist/que-compro-frontend
+    
+    # Regla de reescritura para que Angular maneje todas las rutas y evitar errores 404.
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
+
+
