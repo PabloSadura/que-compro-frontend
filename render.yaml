@@ -1,0 +1,16 @@
+- type: static site
+    name: que-compro-frontend
+    rootDir: ./que-compro-frontend
+    branch: main
+    buildCommand: "npm install && ng build"
+    # 1. Asegúrate de que este directorio sea el correcto.
+    #    Debe coincidir con el 'outputPath' en tu angular.json.
+    publishDir: dist/que-compro-frontend
+
+    # 2. ✅ ¡ESTA ES LA REGLA QUE SOLUCIONA EL ERROR 404!
+    #    Le dice a Render que para cualquier ruta que no encuentre (/*),
+    #    debe servir el archivo index.html.
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
