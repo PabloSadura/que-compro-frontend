@@ -62,13 +62,14 @@
             <div class="space-y-6">
               <!-- Galería para Móviles -->
               <div class="lg:hidden relative w-full aspect-square rounded-lg overflow-hidden border bg-slate-100">
-                <div class="flex h-full transition-transform duration-300 ease-in-out" [style.transform]="'translateX(-' + currentImageIndex() * 100 + '%)'">
-                  @for (img of p.immersive_details?.thumbnails || [p.thumbnail]; track $index) {
-                    <div class="h-full w-full flex-shrink-0">
-                      <img [src]="img" [alt]="p.title" class="h-full w-full object-cover">
-                    </div>
-                  }
+              <div class="flex h-full transition-transform duration-300 ease-in-out" [style.transform]="'translateX(-' + currentImageIndex() * 100 + '%)'">
+              @for (img of p.immersive_details?.thumbnails || [p.thumbnail]; track $index) {
+                <div class="h-full w-full flex-shrink-0 flex justify-center items-center">
+                  <img [src]="img" [alt]="p.title" class="self-center">
                 </div>
+              }
+            </div>
+                
                 <button (click)="prevImage(p.immersive_details?.thumbnails)" class="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-white/60 p-2 text-slate-700 hover:bg-white focus:outline-none">
                   <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" /></svg>
                 </button>
