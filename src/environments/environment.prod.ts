@@ -9,5 +9,5 @@ export const firebaseConfig = {
 };
 
 export const url={
-    base_url:"https://quecompro-backend.onrender.com/api"
+    base_url: "https://quecompro-backend.onrender.com/api"
 }
