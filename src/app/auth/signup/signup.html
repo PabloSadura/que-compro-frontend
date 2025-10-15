@@ -1,49 +1,83 @@
-<div class="card shadow-lg rounded-3 mx-auto mt-5 p-4" style="max-width: 400px;">
-  <h2 class="text-center mb-3">Registrarse</h2>
+<div class="flex min-h-screen items-center justify-center bg-slate-50 p-4">
+  <div class="w-full max-w-sm space-y-6">
+    <!-- Encabezado -->
+    <div class="text-center">
+      <h2 class="text-3xl font-bold text-slate-800">Crear una Cuenta</h2>
+      <p class="mt-2 text-sm text-slate-500">
+        ¿Ya tienes una cuenta?
+        <a [routerLink]="['/login']" class="font-medium text-sky-600 hover:text-sky-500">
+          Iniciar sesión
+        </a>
+      </p>
+    </div>
 
-  <!-- Email -->
-  <div class="mb-3">
-    <label for="email" class="form-label">Email</label>
-    <input
-      type="email"
-      id="email"
-      class="form-control"
-      [(ngModel)]="email"
-      name="email"
-      required
-    />
+    <!-- Formulario -->
+    <div class="space-y-4">
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+        <div class="mt-1">
+          <input
+            type="email"
+            id="email"
+            class="w-full rounded-md border-slate-300 shadow-sm focus:border-sky-500 focus:ring-sky-500"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-slate-700">Contraseña</label>
+        <div class="mt-1">
+          <input
+            type="password"
+            id="password"
+            class="w-full rounded-md border-slate-300 shadow-sm focus:border-sky-500 focus:ring-sky-500"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="space-y-4">
+      <!-- Botón de Registro con Spinner -->
+      <button
+        class="flex w-full items-center justify-center rounded-lg bg-slate-800 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 disabled:opacity-50"
+        (click)="onSignup()"
+        [disabled]="loading"
+      >
+        @if (loading) {
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Cargando...</span>
+        } @else {
+          <span>Registrarse</span>
+        }
+      </button>
+
+      <!-- Botón de Google -->
+      <button
+        class="flex w-full items-center justify-center gap-x-3 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+        (click)="onGoogleLogin()"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.19,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.19,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.19,22C17.6,22 21.54,18.33 21.54,12.81C21.54,11.9 21.35,11.1 21.35,11.1V11.1Z" />
+        </svg>
+        <span>Registrarse con Google</span>
+      </button>
+    </div>
+
+    <!-- Mensaje de Error -->
+    @if (error) {
+      <p class="text-center text-sm text-red-600">{{ error }}</p>
+    }
   </div>
-
-  <!-- Password -->
-  <div class="mb-1">
-    <label for="password" class="form-label">Contraseña</label>
-    <input
-      type="password"
-      id="password"
-      class="form-control"
-      [(ngModel)]="password"
-      name="password"
-      required
-    />
-  </div>
-
-    <button
-    class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center mb-3"
-    (click)="onGoogleLogin()"
-  >
-    <i class="bi bi-google me-2"></i>
-    Registrate con Google
-  </button>
-
-  <!-- Signup button -->
-  <button
-    class="btn btn-primary w-100 mb-2"
-    (click)="onSignup()"
-    [disabled]="loading"
-  >
-    {{ loading ? 'Cargando...' : 'Registrarse' }}
-  </button>
-
-  <!-- Error -->
-  <p *ngIf="error" class="text-danger text-center mt-2">{{ error }}</p>
 </div>
