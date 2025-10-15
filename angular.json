@@ -16,7 +16,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/que-compro-frontend",
+            "outputPath": "dist/que-compro-frontend/browser",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
