@@ -1,4 +1,4 @@
-import { Component, Input, signal, inject } from '@angular/core';
+import { Component, Input, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SearchEvent, Product } from '../../interfaces/interfaces';
@@ -15,13 +15,68 @@ type ModalSection = 'features' | 'pros' | 'cons';
 export class ProductCardsComponent {
   private productService = inject(ProductService);
 
-  // --- ✅ INPUTS MÁS EXPLÍCITOS Y ROBUSTOS ---
+  // Inputs existentes
   @Input() products: Product[] | undefined | null = [];
   @Input() collectionId: string | undefined | null = '';
   @Input() recommendation: string | undefined | null = '';
-  
   @Input() loading: boolean = false;
   @Input() status: string = '';
+
+  // --- ✅ NUEVA LÓGICA DE PROCESAMIENTO ---
+  // Función auxiliar para convertir el precio (ej: "$150.000") en un número
+  private parsePrice(priceString: string | undefined | null): number {
+    if (!priceString) return 0;
+    const numericString = priceString.replace(/[$.ARS\s]/g, '');
+    return parseFloat(numericString) || 0;
+  }
+
+  // Señal computada que ordena y marca los productos
+  processedProducts = computed(() => {
+    const prods = this.products;
+    const recText = this.recommendation;
+
+    if (!prods || prods.length === 0) {
+      return [];
+    }
+
+    let recommendedProductId: string | null = null;
+    if (recText) {
+        const recommendationLower = recText.toLowerCase();
+        let bestMatch = { id: null as string | null, score: 0 };
+
+        // Buscamos el producto cuyo título tenga la mejor coincidencia de palabras
+        prods.forEach(product => {
+            // Dividimos el título en palabras clave (ignorando palabras cortas)
+            const titleWords = product.title ? product.title.toLowerCase().split(' ').filter(word => word.length > 2) : [];
+            let currentScore = 0;
+            
+            titleWords.forEach(word => {
+                if (recommendationLower.includes(word)) {
+                    currentScore++;
+                }
+            });
+
+            // Si este producto tiene una mejor puntuación, lo marcamos como el mejor candidato
+            if (currentScore > bestMatch.score) {
+                bestMatch = { id: product.product_id ?? null, score: currentScore };
+            }
+        });
+        recommendedProductId = bestMatch.id;
+    }
+
+    // 1. Añadimos una marca 'isRecommended' al producto con la mejor coincidencia
+    const mappedProducts = prods.map(product => ({
+      ...product,
+      isRecommended: product.product_id === recommendedProductId
+    }));
+
+    // 2. Ordenamos la lista de productos de mayor a menor precio
+    return mappedProducts.sort((a, b) => {
+      const priceA = this.parsePrice(a.price);
+      const priceB = this.parsePrice(b.price);
+      return priceB - priceA; // Orden descendente
+    });
+  });
 
   // El resto de la lógica del modal se mantiene igual
   isModalOpen = signal(false);
@@ -37,8 +92,6 @@ export class ProductCardsComponent {
     this.currentImageIndex.set(0);
     this.openSection.set('features');
     
-    // ✅ CORRECCIÓN: Ahora usamos el Input 'collectionId' directamente.
-    // Es mucho más seguro y ya no puede ser nulo si se pasa correctamente.
     const collectionId = this.collectionId;
     
     if (!collectionId) {
@@ -59,22 +112,9 @@ export class ProductCardsComponent {
     });
   }
 
-closeModal(): void {
-    this.isModalOpen.set(false);
-  }
-
-  // --- El resto de tus métodos para la UI del modal ---
-  nextImage(thumbnails: string[] | undefined) {
-    if (!thumbnails || thumbnails.length === 0) return;
-    this.currentImageIndex.update(index => (index + 1) % thumbnails.length);
-  }
-
-  prevImage(thumbnails: string[] | undefined) {
-    if (!thumbnails || thumbnails.length === 0) return;
-    this.currentImageIndex.update(index => (index - 1 + thumbnails.length) % thumbnails.length);
-  }
-
-  toggleSection(sectionId: ModalSection): void {
-    this.openSection.update(current => current === sectionId ? null : sectionId);
-  }
+  closeModal(): void { this.isModalOpen.set(false); }
+  nextImage(thumbnails: string[] | undefined) { /* ... */ }
+  prevImage(thumbnails: string[] | undefined) { /* ... */ }
+  toggleSection(sectionId: ModalSection): void { /* ... */ }
 }
+
