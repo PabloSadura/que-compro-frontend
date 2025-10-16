@@ -1,54 +1,50 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   email = '';
   password = '';
-  error: string | null = null;
-  loading = false;
+  loading = signal(false);
+  error = signal<string | null>(null);
 
-  constructor(private auth: AuthService, private router: Router) {}
+  // Señal para controlar la visibilidad de la contraseña
+  showPassword = signal(false);
 
   async onLogin() {
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
     try {
-      await this.auth.login(this.email, this.password);
-      this.router.navigate(['/']); // redirige al home
+      await this.authService.login(this.email, this.password);
+      this.router.navigate(['/']);
     } catch (err: any) {
-      this.error = err.message || 'Error en el login';
+      this.error.set('Correo electrónico o contraseña incorrectos.');
     } finally {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
+
   async onGoogleLogin() {
-  this.loading = true;
-  this.error = null;
-  try {
-    await this.auth.loginWithGoogle();
-    this.router.navigate(['/']);
-  } catch (err: any) {
-    this.error = err.message || 'Error al iniciar sesión con Google';
-  } finally {
-    this.loading = false;
-  }
-}
- async signup() {
+    this.loading.set(true);
+    this.error.set(null);
     try {
-      await this.auth.loginWithGoogle(); // puede ser mismo flujo que login
+      await this.authService.loginWithGoogle();
       this.router.navigate(['/']);
-    } catch (err) {
-      console.error('Error signup:', err);
-    }}
+    } catch (err: any) {
+      this.error.set('No se pudo iniciar sesión con Google.');
+    } finally {
+      this.loading.set(false);
+    }
+  }
 }

@@ -6,7 +6,7 @@
       <p class="mt-2 text-sm text-slate-500">
         ¿Ya tienes una cuenta?
         <a [routerLink]="['/login']" class="font-medium text-sky-600 hover:text-sky-500">
-          Iniciar sesión
+          Inicia sesión
         </a>
       </p>
     </div>
@@ -28,31 +28,46 @@
         </div>
       </div>
 
-      <!-- Password -->
+      <!-- Password con botón para mostrar/ocultar -->
       <div>
         <label for="password" class="block text-sm font-medium text-slate-700">Contraseña</label>
-        <div class="mt-1">
+        <div class="relative mt-1">
           <input
-            type="password"
+            [type]="showPassword() ? 'text' : 'password'"
             id="password"
-            class="w-full rounded-md border-slate-300 shadow-sm focus:border-sky-500 focus:ring-sky-500"
+            class="w-full rounded-md border-slate-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 pr-10"
             [(ngModel)]="password"
             name="password"
             required
           />
+          <button type="button" (click)="showPassword.set(!showPassword())" class="absolute inset-y-0 right-0 flex items-center pr-3" aria-label="Mostrar u ocultar contraseña">
+            @if (showPassword()) {
+              <!-- Icono de ojo tachado (visible) -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+              </svg>
+            } @else {
+              <!-- Icono de ojo (oculto) -->
+              <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+                  <g id="Iconly/Light-Outline/Show" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Show" transform="translate(2.000000, 4.000000)" fill="#a7abb2">
+                      <path d="M10.0029,0.0005 C14.1389,0.0035 17.8529,2.9025 19.9389,7.7565 C20.0209,7.9455 20.0209,8.1595 19.9389,8.3485 C17.8539,13.2035 14.1389,16.1025 10.0029,16.1055 L9.9969,16.1055 C5.8609,16.1025 2.1469,13.2035 0.0609,8.3485 C-0.0201,8.1595 -0.0201,7.9455 0.0609,7.7565 C2.1469,2.9025 5.8619,0.0035 9.9969,0.0005 L10.0029,0.0005 Z M9.9999,1.5005 C6.5639,1.5015 3.4299,3.9445 1.5699,8.0525 C3.4299,12.1615 6.5629,14.6045 9.9999,14.6055 C13.4369,14.6045 16.5699,12.1615 18.4299,8.0525 C16.5699,3.9445 13.4369,1.5015 9.9999,1.5005 Z M9.9996,4.1413 C12.1566,4.1413 13.9116,5.8963 13.9116,8.0533 C13.9116,10.2093 12.1566,11.9633 9.9996,11.9633 C7.8426,11.9633 6.0886,10.2093 6.0886,8.0533 C6.0886,5.8963 7.8426,4.1413 9.9996,4.1413 Z M9.9996,5.6413 C8.6696,5.6413 7.5886,6.7233 7.5886,8.0533 C7.5886,9.3823 8.6696,10.4633 9.9996,10.4633 C11.3296,10.4633 12.4116,9.3823 12.4116,8.0533 C12.4116,6.7233 11.3296,5.6413 9.9996,5.6413 Z" id="Combined-Shape"></path>
+                    </g>
+                  </g>
+                </svg>
+            }
+          </button>
         </div>
       </div>
     </div>
 
     <!-- Botones de Acción -->
-    <div class="space-y-4">
-      <!-- Botón de Registro con Spinner -->
+    <div class="space-y-4 pt-2">
       <button
         class="flex w-full items-center justify-center rounded-lg bg-slate-800 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 disabled:opacity-50"
         (click)="onSignup()"
-        [disabled]="loading"
-      >
-        @if (loading) {
+        [disabled]="loading()">
+        @if (loading()) {
           <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -63,21 +78,17 @@
         }
       </button>
 
-      <!-- Botón de Google -->
       <button
         class="flex w-full items-center justify-center gap-x-3 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
-        (click)="onGoogleLogin()"
-      >
-        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.19,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.19,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.19,22C17.6,22 21.54,18.33 21.54,12.81C21.54,11.9 21.35,11.1 21.35,11.1V11.1Z" />
-        </svg>
+        (click)="onGoogleLogin()">
+        <svg class="h-5 w-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M48 24.48C48 22.84 47.88 21.24 47.52 19.68H24V28.8H37.44C36.96 31.44 35.52 33.6 33.12 35.04V40.8H41.76C45.96 37.08 48 31.44 48 24.48Z" fill="#4285F4"/><path fill-rule="evenodd" clip-rule="evenodd" d="M24 48C30.96 48 36.84 45.72 41.76 40.8L33.12 35.04C30.84 36.6 27.6 37.44 24 37.44C17.04 37.44 11.04 32.76 9 26.88H0.12V32.76C4.92 42.12 13.8 48 24 48Z" fill="#34A853"/><path fill-rule="evenodd" clip-rule="evenodd" d="M9 26.88C8.64 25.68 8.4 24.36 8.4 23.04C8.4 21.72 8.64 20.4 9 19.2V13.32H0.12C-0.359999 15.6 -0.359999 18.12 0.12 20.64C1.44 23.16 2.88 25.56 4.92 27.24L9 26.88Z" fill="#FBBC05"/><path fill-rule="evenodd" clip-rule="evenodd" d="M24 10.56C27.96 10.56 31.2 11.76 33.84 14.28L42 6.12C36.84 1.44 30.96 0 24 0C13.8 0 4.92 5.88 0.12 15.24L9 21.12C11.04 15.24 17.04 10.56 24 10.56Z" fill="#EA4335"/></svg>
         <span>Registrarse con Google</span>
       </button>
     </div>
 
-    <!-- Mensaje de Error -->
-    @if (error) {
-      <p class="text-center text-sm text-red-600">{{ error }}</p>
+    @if (error()) {
+      <p class="text-center text-sm text-red-600 pt-2">{{ error() }}</p>
     }
   </div>
 </div>
+

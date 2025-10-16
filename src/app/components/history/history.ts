@@ -12,44 +12,41 @@ import { HistoryEntry } from '../../interfaces/interfaces';
   selector: 'app-history',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './history.html'
+  templateUrl: './history.html',
 })
 export class HistoryComponent {
   private historyService = inject(HistoryService);
 
-  // Carga inicial de datos
+  // Señales para la UI del componente
   error = signal<string | null>(null);
-  private initialHistory = toSignal(
+  selectedHistoryItem = signal<HistoryEntry | null>(null);
+  searchTerm = signal('');
+  visibleItemsCount = signal(5);
+
+  // --- CORRECCIÓN APLICADA ---
+  // 1. La señal que recibe los datos ahora es privada. Puede ser 'undefined' mientras carga.
+  private historyData = toSignal(
     this.historyService.getHistory().pipe(
       catchError(err => {
         console.error('Error al cargar historial:', err);
         this.error.set("No se pudo cargar el historial.");
-        return of([]); // Devuelve un array vacío en caso de error
+        return of([]); // En caso de error, devolvemos un array vacío.
       })
     ),
-    { initialValue: [] }
+    { initialValue: undefined } 
   );
-  
-  // Señal para la lista de historial, que podemos modificar si es necesario
-  history = signal<HistoryEntry[]>([]);
 
-  // Señales para la UI
-  selectedHistoryItem = signal<HistoryEntry | null>(null);
-  loading = computed(() => this.initialHistory() === undefined);
-  searchTerm = signal('');
-  visibleItemsCount = signal(5);
+  // 2. 'loading' se computa a partir de la señal privada.
+  loading = computed(() => this.historyData() === undefined);
 
-  // ✅ NUEVO: Señales para controlar el autocompletado en móviles
-  isSearchFocused = signal(false);
-  showAutocomplete = computed(() => {
-    // Muestra el autocompletado solo si el input está enfocado y hay texto
-    return this.isSearchFocused() && this.searchTerm().length > 0;
-  });
+  // 3. Creamos una señal pública 'history' que SIEMPRE es un array.
+  //    Si los datos aún no han llegado, será un array vacío.
+  history = computed(() => this.historyData() ?? []);
 
-  // Señales computadas para filtrar y paginar (sin cambios)
+  // Las señales computadas ahora consumen la señal 'history', que es segura.
   filteredHistory = computed(() => {
     const term = this.searchTerm().toLowerCase();
-    const historyList = this.history();
+    const historyList = this.history(); // Ya no se necesita '|| []'
     if (!term) return historyList;
     return historyList.filter(item => item.query.toLowerCase().includes(term));
   });
@@ -59,30 +56,14 @@ export class HistoryComponent {
   });
 
   constructor() {
-    // Efecto para inicializar y seleccionar el primer item
-    effect(() => {
-      const initialData = this.initialHistory();
-      if(initialData.length > 0) {
-        this.history.set(initialData);
-        // Selecciona el primer item solo si no hay uno ya seleccionado
-        if (!this.selectedHistoryItem()) {
-          this.selectedHistoryItem.set(initialData[0]);
-        }
-      }
-    });
-
-    // Efecto para auto-seleccionar al filtrar en escritorio
+    // El 'effect' ahora reacciona a los cambios en 'filteredHistory' de forma segura.
     effect(() => {
       const currentFilteredHistory = this.filteredHistory();
-      // No cambia la selección si ya hay algo seleccionado que coincide con el filtro
-      const currentSelection = this.selectedHistoryItem();
-      if(currentSelection && currentFilteredHistory.some(item => item.id === currentSelection.id)) {
-        return;
-      }
       this.selectedHistoryItem.set(currentFilteredHistory[0] ?? null);
     });
   }
 
+  // Los métodos de interacción no cambian
   showHistoryDetails(item: HistoryEntry): void {
     this.selectedHistoryItem.set(item);
   }
@@ -90,21 +71,17 @@ export class HistoryComponent {
   showMore(): void {
     this.visibleItemsCount.update(count => count + 5);
   }
+  
+  // Lógica para el autocompletado en móvil (se mantiene)
+  isSearchFocused = signal(false);
+  showAutocomplete = computed(() => this.isSearchFocused() && this.searchTerm().length > 0);
 
-  // ✅ NUEVO: Métodos para manejar el foco del buscador
-  onSearchFocus(): void {
-    this.isSearchFocused.set(true);
-  }
-
-  onSearchBlur(): void {
-    // Pequeño delay para permitir que el clic en una sugerencia se registre antes de ocultar
-    setTimeout(() => this.isSearchFocused.set(false), 200);
-  }
-
-  // ✅ NUEVO: Método para seleccionar desde el autocompletado
+  onSearchFocus(): void { this.isSearchFocused.set(true); }
+  onSearchBlur(): void { setTimeout(() => this.isSearchFocused.set(false), 200); }
   selectFromAutocomplete(item: HistoryEntry): void {
-    this.searchTerm.set(item.query); // Rellena el input
-    this.showHistoryDetails(item); // Selecciona el item para mostrar sus resultados
-    this.isSearchFocused.set(false); // Oculta el autocompletado
+    this.searchTerm.set(item.query);
+    this.showHistoryDetails(item);
+    this.isSearchFocused.set(false);
   }
 }
+
