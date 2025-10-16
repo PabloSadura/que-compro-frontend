@@ -9,6 +9,7 @@ import { url } from '../../environments/environment.prod';
   providedIn: 'root'
 })
 export class SearchService {
+  //private API_URL = 'http://localhost:5000/api/search'
   private API_URL = url.base_url + '/search'
 
   constructor(

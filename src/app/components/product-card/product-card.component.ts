@@ -112,9 +112,21 @@ export class ProductCardsComponent {
     });
   }
 
-  closeModal(): void { this.isModalOpen.set(false); }
-  nextImage(thumbnails: string[] | undefined) { /* ... */ }
-  prevImage(thumbnails: string[] | undefined) { /* ... */ }
-  toggleSection(sectionId: ModalSection): void { /* ... */ }
+    closeModal(): void { this.isModalOpen.set(false); }
+
+    nextImage(thumbnails: string[] | undefined) {
+      if (!thumbnails || thumbnails.length === 0) return;
+      this.currentImageIndex.update(index => (index + 1) % thumbnails.length);
+
+    }
+
+    prevImage(thumbnails: string[] | undefined) {
+      if (!thumbnails || thumbnails.length === 0) return;
+      this.currentImageIndex.update(index => (index - 1 + thumbnails.length) % thumbnails.length);
+    }
+
+    toggleSection(sectionId: ModalSection): void {
+      this.openSection.update(current => current === sectionId ? null : sectionId);
+    }  
 }
 
