@@ -12,6 +12,7 @@ export const DEMO_DATA: SearchEvent = {
                 {
                     position: 12,
                     title:  'Xiaomi Vacuum E10 Robot Aspirador WiFi' ,
+                    isRecomended:false,
                     product_id :  "10646767087229606851" ,
                     serpapi_product_api :  'https://serpapi.com/search.json?engine=google_product&gl=ar&google_domain=google.com&hl=es&product_id=10646767087229606851 ',
                     product_link :   'https://www.google.com/search?ibp=oshop&q=aspiradora robot&prds=catalogid:10646767087229606851,headlineOfferDocid:11509444608509434341,imageDocid:13364897304625887098,rds:PC_13403884435269798524|PROD_PC_13403884435269798524,gpcid:13403884435269798524,mid:576462476247897422,pvt:hg&hl=es&gl=ar&udm=28' ,
@@ -423,7 +424,7 @@ export const DEMO_DATA: SearchEvent = {
                 {
                      position : 36,
                      title :  'Aspiradora Robot Liectroux C30B Trapeadora 3 Modos 200m2 App Programable' ,
-                     product_id :  '10657393081579418839' ,
+                     isRecomended:false,
                      serpapi_product_api :   'https://serpapi.com/search.json?engine=google_product&gl=ar&google_domain=google.com&hl=es&product_id=10657393081579418839',
                      product_link :   'https://www.google.com/search?ibp=oshop&q=aspiradora robot&prds=catalogid:10657393081579418839,headlineOfferDocid:10818751396912078316,imageDocid:13710909047501614973,rds:PC_15698425103373783522|PROD_PC_15698425103373783522,gpcid:15698425103373783522,mid:576462775813088405,pvt:hg&hl=es&gl=ar&udm=28' ,
                      immersive_product_page_token :  'eyJlaSI6IkwySG1hTlA3T1Bhb2hiSVBfOXlxMlFRIiwicHJvZHVjdGlkIjoiIiwiY2F0YWxvZ2lkIjoiMTA2NTczOTMwODE1Nzk0MTg4MzkiLCJoZWFkbGluZU9mZmVyRG9jaWQiOiIxMDgxODc1MTM5NjkxMjA3ODMxNiIsImltYWdlRG9jaWQiOiIxMzcxMDkwOTA0NzUwMTYxNDk3MyIsInJkcyI6IlBDXzE1Njk4NDI1MTAzMzczNzgzNTIyfFBST0RfUENfMTU2OTg0MjUxMDMzNzM3ODM1MjIiLCJxdWVyeSI6ImFzcGlyYWRvcmErcm9ib3QiLCJncGNpZCI6IjE1Njk4NDI1MTAzMzczNzgzNTIyIiwibWlkIjoiNTc2NDYyNzc1ODEzMDg4NDA1IiwicHZ0IjoiaGciLCJ1dWxlIjpudWxsLCJnbCI6ImFyIiwiaGwiOiJlcyJ9 ',
@@ -672,6 +673,7 @@ export const DEMO_DATA: SearchEvent = {
                 {
                      position : 31,
                      title :  'Aspiradora Robot iRobot Roomba J7' ,
+                     isRecomended: true,
                      product_id :  '14140919058950769517' ,
                      serpapi_product_api :   'https://serpapi.com/search.json?engine=google_product&gl=ar&google_domain=google.com&hl=es&product_id=14140919058950769517 ',
                      product_link :   'https://www.google.com/search?ibp=oshop&q=aspiradora robot&prds=catalogid:14140919058950769517,headlineOfferDocid:15703285674399689003,imageDocid:4273857647105204296,rds:PC_9233890498144907725|PROD_PC_9233890498144907725,gpcid:9233890498144907725,mid:576462600916801552,pvt:hg&hl=es&gl=ar&udm=28' ,
@@ -1230,6 +1232,7 @@ export const DEMO_DATA: SearchEvent = {
                 {
                      position : 8,
                      title :  'robot aspirador y trapeador iRobot Roomba Combo i5+ con autovaciado ',
+                     isRecomended:false,
                      product_id :  '17415312784287207478' ,
                      serpapi_product_api :   'https://serpapi.com/search.json?engine=google_product&gl=ar&google_domain=google.com&hl=es&product_id=17415312784287207478' ,
                      product_link :   'https://www.google.com/search?ibp=oshop&q=aspiradora robot&prds=catalogid:17415312784287207478,headlineOfferDocid:15240396965526259085,imageDocid:11473287795360779864,rds:PC_16396827973688459785|PROD_PC_16396827973688459785,gpcid:16396827973688459785,mid:576462517364235444,pvt:hg&hl=es&gl=ar&udm=28' ,
@@ -1274,6 +1277,7 @@ export const DEMO_DATA: SearchEvent = {
                 {
                      position : 15,
                      title :  'Roborock Q7 M5+ Robot Trapeador 7 semanas' ,
+                     isRecomended:false,
                      product_id :  '6255378403228501573' ,
                      serpapi_product_api :   'https://serpapi.com/search.json?engine=google_product&gl=ar&google_domain=google.com&hl=es&product_id=6255378403228501573' ,
                      product_link :   'https://www.google.com/search?ibp=oshop&q=aspiradora robot&prds=catalogid:6255378403228501573,headlineOfferDocid:13975601456881073697,imageDocid:1323901879763458717,rds:PC_10899927057649909501|PROD_PC_10899927057649909501,gpcid:10899927057649909501,mid:576462835499202068,pvt:hg&hl=es&gl=ar&udm=28' ,
@@ -1318,6 +1322,7 @@ export const DEMO_DATA: SearchEvent = {
                 {
                      position : 4,
                      title :  'Robot Aspirador Wyze Lidar Mapping, 110 Min De Autonomía, Co' ,
+                     isRecomended:false,
                      product_id :  '996865571621834440' ,
                      serpapi_product_api :   'https://serpapi.com/search.json?engine=google_product&gl=ar&google_domain=google.com&hl=es&product_id=996865571621834440' ,
                      product_link :   'https://www.google.com/search?ibp=oshop&q=aspiradora robot&prds=catalogid:996865571621834440,headlineOfferDocid:17572386017850203690,imageDocid:7435828859272556999,rds:PC_5462293695863564408|PROD_PC_5462293695863564408,gpcid:5462293695863564408,mid:576462826536199012,pvt:hg&hl=es&gl=ar&udm=28' ,

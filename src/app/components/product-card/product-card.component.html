@@ -18,13 +18,10 @@
       
     <!-- Grid de Tarjetas Simplificadas -->
     <div class="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-      <!-- ✅ El bucle ahora itera sobre la señal 'processedProducts()' -->
       @for (p of processedProducts(); track p.product_id) {
         @if (p) {
           <div class="group relative text-left">
-
-            <!-- ✅ Estrella para el producto recomendado -->
-            @if(p.isRecommended) {
+            @if(p.isRecomended) {
               <div class="absolute top-2 right-2 z-10 rounded-full bg-green-100 p-1.5 text-green-600 shadow-md" title="Recomendado por la IA">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                   <path fill-rule="evenodd" d="M10.868 2.884c.321-.662 1.134-.662 1.456 0l1.761 3.635 4.02 1.401c.731.256 1.034 1.223.498 1.756l-3.35 2.768 1.107 4.34c.189.742-.602 1.34-1.286.963L10 15.428l-3.567 2.52c-.684.377-1.475-.221-1.286-.963l1.107-4.34-3.35-2.768c-.536-.533-.233-1.499.498-1.756l4.02-1.401 1.76-3.635z" clip-rule="evenodd" />

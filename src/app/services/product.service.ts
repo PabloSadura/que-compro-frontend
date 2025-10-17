@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { AuthService } from './auth.service'; // Asegúrate que la ruta sea correcta
 import { Product } from '../interfaces/interfaces'; // Ajusta la ruta a tu interfaz
-import { url } from '../../environments/environment.prod';
+import { API_URL } from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,9 @@ export class ProductService {
   private http = inject(HttpClient);
   private auth = inject(AuthService); // Inyectamos el servicio de autenticación
 
-  private apiUrl = url.base_url; // Reemplaza con la URL de tu backend
+  private baseUrl = API_URL.base_url;
+
+  constructor() {}
 
   getProductById(idCollection: string, idProduct:string): Observable<Product> {    
     return from(this.auth.getIdToken())
@@ -25,7 +27,7 @@ export class ProductService {
         }
         const headers = new HttpHeaders({Authorization: `Bearer ${token}`
         });
-        return this.http.get<Product>(`${this.apiUrl}/product/${idCollection}/${idProduct}`, { headers });
+        return this.http.get<Product>(`${this.baseUrl}/product/${idCollection}/${idProduct}`, { headers });
       })
     );
   }

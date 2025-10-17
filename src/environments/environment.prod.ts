@@ -8,6 +8,10 @@ export const firebaseConfig = {
   appId: "1:171932848592:web:82abb836248eb32868e9d5"
 };
 
-export const url={
+export const API_URL={
     base_url: "https://quecompro-backend.onrender.com/api"
 }
+// export const API_URL={
+//     base_url: "http://localhost:5000/api"
+
+// }

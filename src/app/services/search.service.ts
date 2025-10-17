@@ -2,15 +2,15 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { SearchEvent } from '../interfaces/interfaces';
-import { url } from '../../environments/environment.prod';
+import { API_URL } from '../../environments/environment.prod';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  //private API_URL = 'http://localhost:5000/api/search'
-  private API_URL = url.base_url + '/search'
+private baseUrl = API_URL.base_url + '/search';
+
 
   constructor(
     private auth: AuthService,
@@ -26,7 +26,7 @@ export class SearchService {
   ): Observable<SearchEvent> {
     return new Observable<SearchEvent>(observer => {
       this.auth.getIdToken().then(token => {
-        const url = new URL(`${this.API_URL}/stream`);
+        const url = new URL(`${this.baseUrl}/stream`);
         url.searchParams.append('query', query);
         if (minPrice) url.searchParams.append('minPrice', minPrice.toString());
         if (maxPrice) url.searchParams.append('maxPrice', maxPrice.toString());

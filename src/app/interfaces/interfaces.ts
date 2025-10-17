@@ -30,6 +30,7 @@ export interface CreatedAt {
 
 export interface Product {
   position?: number
+  isRecomended: boolean
   title?: string
   product_link?: string
   product_id?: string

@@ -1,7 +1,7 @@
 import { Component, Input, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SearchEvent, Product } from '../../interfaces/interfaces';
+import {  Product } from '../../interfaces/interfaces';
 import { ProductService } from '../../services/product.service';
 
 type ModalSection = 'features' | 'pros' | 'cons';
@@ -15,15 +15,12 @@ type ModalSection = 'features' | 'pros' | 'cons';
 export class ProductCardsComponent {
   private productService = inject(ProductService);
 
-  // Inputs existentes
   @Input() products: Product[] | undefined | null = [];
   @Input() collectionId: string | undefined | null = '';
   @Input() recommendation: string | undefined | null = '';
   @Input() loading: boolean = false;
   @Input() status: string = '';
 
-  // --- ✅ NUEVA LÓGICA DE PROCESAMIENTO ---
-  // Función auxiliar para convertir el precio (ej: "$150.000") en un número
   private parsePrice(priceString: string | undefined | null): number {
     if (!priceString) return 0;
     const numericString = priceString.replace(/[$.ARS\s]/g, '');
@@ -33,45 +30,13 @@ export class ProductCardsComponent {
   // Señal computada que ordena y marca los productos
   processedProducts = computed(() => {
     const prods = this.products;
-    const recText = this.recommendation;
 
     if (!prods || prods.length === 0) {
       return [];
     }
 
-    let recommendedProductId: string | null = null;
-    if (recText) {
-        const recommendationLower = recText.toLowerCase();
-        let bestMatch = { id: null as string | null, score: 0 };
-
-        // Buscamos el producto cuyo título tenga la mejor coincidencia de palabras
-        prods.forEach(product => {
-            // Dividimos el título en palabras clave (ignorando palabras cortas)
-            const titleWords = product.title ? product.title.toLowerCase().split(' ').filter(word => word.length > 2) : [];
-            let currentScore = 0;
-            
-            titleWords.forEach(word => {
-                if (recommendationLower.includes(word)) {
-                    currentScore++;
-                }
-            });
-
-            // Si este producto tiene una mejor puntuación, lo marcamos como el mejor candidato
-            if (currentScore > bestMatch.score) {
-                bestMatch = { id: product.product_id ?? null, score: currentScore };
-            }
-        });
-        recommendedProductId = bestMatch.id;
-    }
-
-    // 1. Añadimos una marca 'isRecommended' al producto con la mejor coincidencia
-    const mappedProducts = prods.map(product => ({
-      ...product,
-      isRecommended: product.product_id === recommendedProductId
-    }));
-
-    // 2. Ordenamos la lista de productos de mayor a menor precio
-    return mappedProducts.sort((a, b) => {
+    // 1. Ordenamos la lista de productos de mayor a menor precio
+    return prods.sort((a, b) => {
       const priceA = this.parsePrice(a.price);
       const priceB = this.parsePrice(b.price);
       return priceB - priceA; // Orden descendente
