@@ -64,4 +64,10 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
+  isHelpMenuOpen = signal(false);
+
+  toggleHelpMenu() {
+    this.isHelpMenuOpen.update(open => !open);
+  }
 }

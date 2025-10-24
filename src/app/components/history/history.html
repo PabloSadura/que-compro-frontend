@@ -72,32 +72,53 @@
         </div>
 
         <!-- Columna de Resultados (Ahora ocupa todo el ancho en móviles) -->
-        <div class="md:col-span-2 lg:col-span-3">
-          @if (selectedHistoryItem(); as selectedItem) {
-            <div class="space-y-6">
-              <div class="bg-sky-50 border border-sky-200 rounded-lg p-4 text-center">
-                <h3 class="font-bold text-sky-800">Análisis IA para "{{selectedItem.query}}"</h3>
-                <p class="mt-1 text-slate-700 text-sm">{{ selectedItem.result.recomendacion_final }}</p>
-              </div>
-
-              <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                @for (p of selectedItem.result.productos; track p.product_id) {
-                  <a [routerLink]="['/product', selectedItem.id, p.product_id]" class="block bg-white rounded-lg shadow-md overflow-hidden border border-slate-200 hover:shadow-xl hover:-translate-y-1 transition-all no-underline">
-                    <div class="relative w-full aspect-square bg-slate-100"><img [src]="p.thumbnail" [alt]="p.title" class="h-full w-full object-cover"></div>
-                    <div class="p-3">
-                      <h4 class="text-sm font-semibold text-slate-800 line-clamp-2 no-underline">{{ p.title }}</h4>
-                      <p class="text-lg font-bold text-slate-900 mt-2 no-underline">{{ p.price }}</p>
-                    </div>
-                  </a>
-                }
-              </div>
+         <div class="md:col-span-2 lg:col-span-3">
+  @if (selectedHistoryItem(); as selectedItem) {
+    <div class="space-y-8">
+      
+      <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 shadow-sm">
+        <div class="flex flex-col items-center text-center">
+            <div class="flex-shrink-0 bg-sky-100 rounded-full p-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-sky-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.5 21.75l-.398-1.188a3.375 3.375 0 00-2.455-2.456L12.75 18l1.188-.398a3.375 3.375 0 002.455-2.456L16.5 14.25l.398 1.188a3.375 3.375 0 002.456 2.456L20.25 18l-1.188.398a3.375 3.375 0 00-2.456 2.456z" /></svg>
             </div>
-          } @else {
-             <div class="text-center border-2 border-dashed border-slate-300 rounded-lg p-12 h-full flex flex-col justify-center">
-                <p class="text-slate-500">No se encontraron resultados para tu búsqueda.</p>
-             </div>
-          }
+            <h2 class="mt-4 text-xl font-bold text-gray-900">Análisis de la IA</h2>
+            <p class="text-sm text-gray-500">Resultados para: <span class="font-medium text-gray-700">"{{selectedItem.query}}"</span></p>
+            <p class="mt-2 text-base text-gray-600 max-w-2xl">{{ selectedItem.result.recomendacion_final }}</p>
         </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 sm:gap-x-6 lg:gap-x-8 lg:gap-y-10">
+        @for (p of selectedItem.result.productos; track p.product_id) {
+          <a [routerLink]="['/product', selectedItem.id, p.product_id]" class="group relative text-center no-underline">
+            
+            @if(p.isRecomended) {
+              <div class="absolute top-2 right-2 z-10 rounded-full bg-green-100 p-1.5 text-green-600 shadow-md" title="Recomendado por la IA">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10.868 2.884c.321-.662 1.134-.662 1.456 0l1.761 3.635 4.02 1.401c.731.256 1.034 1.223.498 1.756l-3.35 2.768 1.107 4.34c.189.742-.602 1.34-1.286.963L10 15.428l-3.567 2.52c-.684.377-1.475-.221-1.286-.963l1.107-4.34-3.35-2.768c-.536-.533-.233-1.499.498-1.756l4.02-1.401 1.76-3.635z" clip-rule="evenodd" /></svg>
+              </div>
+            }
+
+            <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+              <img [src]="p.thumbnail" [alt]="p.title" class="h-full w-full object-cover object-center">
+            </div>
+            <div class="pt-3">
+              <h3 class="text-sm font-medium text-gray-700 line-clamp-2">{{ p.title }}</h3>
+              <p class="mt-1 text-base font-semibold text-gray-900">{{ p.price }}</p>
+            </div>
+          </a>
+        }
+      </div>
+
+    </div>
+  } @else {
+    <div class="flex h-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="mx-auto h-12 w-12 text-gray-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h7.5M8.25 12h7.5m-7.5 5.25h7.5M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0z" />
+      </svg>
+      <h3 class="mt-2 text-sm font-semibold text-gray-900">Ver detalles de la búsqueda</h3>
+      <p class="mt-1 text-sm text-gray-500">Selecciona un elemento de tu historial para ver los productos y el análisis de la IA.</p>
+    </div>
+  }
+</div>
       </div>
     } @else {
       <div class="text-center border-2 border-dashed border-slate-300 rounded-lg p-12">
